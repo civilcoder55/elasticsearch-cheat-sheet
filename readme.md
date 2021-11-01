@@ -3,11 +3,11 @@
 </p>
 
 <p align="center">
-  <h1 align="center">Elasticsearch Cheat Sheet "will be updated continuously"</h1>
+  <h1 align="center">Elasticsearch Cheat Sheet </h1>
+  <h2 align="center">"will be updated continuously" </h2>
 </p>
 
-
-you can test these queries on kibana dev tools 
+you can test these queries on kibana dev tools ,
 if you will test them with curl or postman don't forget to add correct headers
 
 ## General
@@ -37,7 +37,7 @@ if you will test them with curl or postman don't forget to add correct headers
 
 ## Documents CRUD
 
-- add document with specific id
+- insert document to index with specific id
 
   ```sh
   POST movies/_doc/1
@@ -48,7 +48,7 @@ if you will test them with curl or postman don't forget to add correct headers
 
   ```
 
-- add document without id (elastic will generate id)
+- insert document to index without id (elastic will generate id)
 
   ```sh
   POST movies/_doc
@@ -58,7 +58,17 @@ if you will test them with curl or postman don't forget to add correct headers
   }
   ```
 
-- add bulk documents
+- replace document by id if found in index with new document
+
+  ```sh
+  PUT movies/_doc/1
+  {
+    "name" : "dune",
+    "rate": 8.3
+  }
+  ```
+
+- insert bulk documents
 
   ```sh
   POST _bulk
@@ -89,6 +99,17 @@ if you will test them with curl or postman don't forget to add correct headers
   }
   ```
 
+- scripted update index document by id
+
+  ```sh
+  POST movies/_update/1
+  {
+    "script" : {
+        "source" : "ctx._source.rate = 8.3"
+    }
+  }
+  ```
+
 - update index documents by query
 
   ```sh
@@ -104,7 +125,22 @@ if you will test them with curl or postman don't forget to add correct headers
   }
   ```
 
-- delete index documents by id
+- upsert index document by id (updateOrInsert)
+
+  ```sh
+  POST movies/_update/1
+  {
+    "script": {
+      "source": "ctx._source.rate = 8.3"
+    },
+    "upsert": {
+      "name" : "dune",
+      "rate" : 8.3
+    }
+  }
+  ```
+
+- delete index document by id
 
   ```sh
   DELETE movies/_doc/1
