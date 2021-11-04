@@ -10,6 +10,13 @@
 you can test these queries on kibana dev tools ,
 if you will test them with curl or postman don't forget to add correct headers
 
+# Table of contents
+
+- [General](#general)
+- [Index Operations](#index-operations)
+- [Documents CRUD](#documents-crud)
+- [Mapping](#mapping)
+
 ## General
 
 - cluster/nodes/shards details
@@ -156,3 +163,48 @@ if you will test them with curl or postman don't forget to add correct headers
     }
   }
   ```
+
+## Mapping
+
+- show index mapping
+
+  ```sh
+  GET movies/_mapping
+  ```
+
+- add new index with mapping
+
+  ```sh
+  PUT movies
+  {
+    "mappings": {
+      "properties": {
+        "name":{
+          "type": "text",
+          "fields": {
+            "keyword":{
+              "type":"keyword"
+            }
+          },
+        "rate":{
+          "type": "float"
+        }
+      }
+    }
+  }
+  ```
+
+- add new mapping field to existing index
+
+  ```sh
+  PUT movies/_mapping
+  {
+    "properties": {
+      "description":{
+        "type": "text"
+      }
+    }
+  }
+  ```
+
+
