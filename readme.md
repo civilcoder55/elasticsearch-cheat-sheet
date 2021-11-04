@@ -16,6 +16,7 @@ if you will test them with curl or postman don't forget to add correct headers
 - [Index Operations](#index-operations)
 - [Documents CRUD](#documents-crud)
 - [Mapping](#mapping)
+- [Term Queries](#term-queries)
 
 ## General
 
@@ -176,18 +177,29 @@ if you will test them with curl or postman don't forget to add correct headers
 
   ```sh
   PUT movies
-  {
+    {
     "mappings": {
       "properties": {
-        "name":{
+        "name": {
           "type": "text",
           "fields": {
-            "keyword":{
-              "type":"keyword"
+            "keyword": {
+              "type": "keyword"
             }
-          },
-        "rate":{
+          }
+        },
+        "rate": {
           "type": "float"
+        },
+        "status": {
+          "type": "keyword"
+        }
+        "year": {
+          "type": "date",
+          "format": "yyyy"
+        },
+        "genres": {
+          "type": "keyword"
         }
       }
     }
@@ -207,4 +219,113 @@ if you will test them with curl or postman don't forget to add correct headers
   }
   ```
 
+## Term Queries
 
+- search for single term
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "term": {
+        "name.keyword": "dune"
+      }
+    }
+  }
+  ```
+
+- search for multi terms
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "terms": {
+        "genres": ["Action" , "Drama"]
+      }
+    }
+  }
+  ```
+
+- search for array of ids
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "ids": {
+        "values": [1 , 2 , 3]
+      }
+    }
+  }
+  ```
+
+- search for range of dates or numbers
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "range": {
+        "rate": {
+          "gte": 6,
+          "lte": 10
+        }
+      }
+    }
+  }
+  ```
+
+- search for not-null field
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "exists": {
+        "field": "genres"
+      }
+    }
+  }
+  ```
+
+- search for field with prefix
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "prefix": {
+        "name.keyword": {
+          "value": "the"
+        }
+      }
+    }
+  }
+  ```
+
+- search for field with wildcards
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "wildcard": {
+        "name.keyword": "*rix"
+      }
+    }
+  }
+  ```
+
+- search for field with regex
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "regexp": {
+        "name.keyword": "[a-z]+"
+      }
+    }
+  }
+  ```
