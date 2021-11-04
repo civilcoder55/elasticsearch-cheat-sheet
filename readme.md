@@ -17,6 +17,7 @@ if you will test them with curl or postman don't forget to add correct headers
 - [Documents CRUD](#documents-crud)
 - [Mapping](#mapping)
 - [Term Queries](#term-queries)
+- [Full Text Queries](#full-text-queries)
 
 ## General
 
@@ -325,6 +326,48 @@ if you will test them with curl or postman don't forget to add correct headers
     "query": {
       "regexp": {
         "name.keyword": "[a-z]+"
+      }
+    }
+  }
+  ```
+
+## Full Text Queries
+
+- search for text with flexible match
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "match": {
+        "description": "neo saves zion"
+      }
+    }
+  }
+  ```
+
+  - search for text with phrase
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "match_phrase": {
+        "description": "city of zion"
+      }
+    }
+  }
+  ```
+
+- search for text in multi fields
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "multi_match": {
+        "query": "matrix",
+        "fields": ["name","description"]
       }
     }
   }
