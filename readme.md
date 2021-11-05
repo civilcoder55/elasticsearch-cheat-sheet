@@ -428,39 +428,39 @@ if you will test them with curl or postman don't forget to add correct headers
 
 - change result records size aka (limit ^\_^)
 
-```sh
-GET movies/_search
-{
-  "size": 1,
-  "query": {
-    "match_all": {}
+  ```sh
+  GET movies/_search
+  {
+    "size": 1,
+    "query": {
+      "match_all": {}
+    }
   }
-}
-```
+  ```
 
 - change result records offset
 
-```sh
-GET movies/_search
-{
-  "size": 1,
-  "from": 1,
-  "query": {
-    "match_all": {}
+  ```sh
+  GET movies/_search
+  {
+    "size": 1,
+    "from": 1,
+    "query": {
+      "match_all": {}
+    }
   }
-}
-```
+  ```
 
 - sort result records
 
-```sh
-GET movies/_search
-{
-  "query": {
-    "match_all": {}
-  }, 
-  "sort": [
-    {"rate": {"order": "desc"}}
-  ]
-}
-```
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "match_all": {}
+    }, 
+    "sort": [
+      {"rate": {"order": "desc"}}
+    ]
+  }
+  ```
