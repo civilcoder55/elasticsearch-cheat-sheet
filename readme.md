@@ -18,6 +18,8 @@ if you will test them with curl or postman don't forget to add correct headers
 - [Mapping](#mapping)
 - [Term Queries](#term-queries)
 - [Full Text Queries](#full-text-queries)
+- [Bool Queries](#bool-queries)
+- [Query Result](#query-result)
 
 ## General
 
@@ -372,3 +374,93 @@ if you will test them with curl or postman don't forget to add correct headers
     }
   }
   ```
+
+## Bool Queries
+
+- search with bool queries aka (where clause ^\_^)
+
+  ```sh
+  GET movies/_search
+  {
+    "query": {
+      "bool": {
+        "must": [
+          {"match": {"name": "matrix"}}
+        ],
+        "should": [
+          {"match": {"name": "the matrix 2"}}
+        ],
+        "must_not": [
+          {"term": {"genres": "Drama"}}
+        ],
+        "filter": [
+          { "range": { "rate": { "gte": "7", "lte": "10" } } }
+        ]
+      }
+    }
+  }
+  ```
+
+## Query Result
+
+- change result format
+
+  ```sh
+  GET movies/_search?format=yaml
+  {
+    "query": {
+      "match_all": {}
+    }
+  }
+  ```
+
+- filter result fields
+
+  ```sh
+  GET movies/_search
+  {
+    "_source": ["name","rate"],
+    "query": {
+      "match_all": {}
+    }
+  }
+  ```
+
+- change result records size aka (limit ^\_^)
+
+```sh
+GET movies/_search
+{
+  "size": 1,
+  "query": {
+    "match_all": {}
+  }
+}
+```
+
+- change result records offset
+
+```sh
+GET movies/_search
+{
+  "size": 1,
+  "from": 1,
+  "query": {
+    "match_all": {}
+  }
+}
+```
+
+- sort result records
+
+```sh
+GET movies/_search
+{
+  "query": {
+    "match_all": {}
+  }, 
+  "sort": [
+    {"rate": {"order": "desc"}}
+  ]
+}
+```
